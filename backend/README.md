@@ -112,14 +112,14 @@ GET "/questions"
          "difficulty": 3, 
          "id": 17, 
          "question": "La Giaconda is better known as what?"
-        }, 
+        },
         {
          "answer": "One", 
          "category": 2, 
          "difficulty": 4, 
          "id": 18, 
          "question": "How many paintings did Van Gogh sell in his lifetime?"
-        }, 
+        },
         {
          "answer": "Jackson Pollock",
          "category": 2,
@@ -159,21 +159,21 @@ GET "/categories/{category_id}/questions"
   "current_category": "Art", 
   "questions": [
     {
-      "answer": "Escher", 
-      "category": 2, 
-      "difficulty": 1, 
-      "id": 16, 
+      "answer": "Escher",
+      "category": 2,
+      "difficulty": 1,
+      "id": 16,
       "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
     }, 
     {
-      "answer": "Mona Lisa", 
-      "category": 2, 
-      "difficulty": 3, 
-      "id": 17, 
+      "answer": "Mona Lisa",
+      "category": 2,
+      "difficulty": 3,
+      "id": 17,
       "question": "La Giaconda is better known as what?"
     }
   ], 
-  "success": True, 
+  "success": True,
   "total_questions": 2
 }
 ```
@@ -198,17 +198,17 @@ POST "/quizzes"
   - Sends a post request in order to get the next question
   - Request Body:
     {
-        'previous_questions': [1, 4, 20, 15]
+        'previous_questions': [1, 4, 20, 15],
         'quiz_category': current_category
     }
 - Sample: curl -X POST 'http://localhost:5000/quizzes'
 - Expected Response: 
 {
  "question": {
-  "answer": "Escher", 
-  "category": 2, 
-  "difficulty": 1, 
-  "id": 16, 
+  "answer": "Escher",
+  "category": 2,
+  "difficulty": 1,
+  "id": 16,
   "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
  }
  "success": True
