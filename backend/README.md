@@ -133,8 +133,7 @@ GET "/questions"
          "difficulty": 2,
          "id": 26,
          "question": "Who is the greatest player of all time?"
-        }
-    ],
+        }],
     'totalQuestions': 20,
     'categories': { '1' : "Science",
     '2' : "Art",
@@ -171,8 +170,7 @@ GET "/categories/{category_id}/questions"
       "difficulty": 3,
       "id": 17,
       "question": "La Giaconda is better known as what?"
-    }
-  ], 
+    }], 
   "success": True,
   "total_questions": 2
 }
@@ -191,18 +189,21 @@ DELETE "/questions/{question_id}"
   "success": True,
   "deleted": 5
 }
-
+```
 POST "/quizzes"
 
 - General:
   - Sends a post request in order to get the next question
   - Request Body:
+  ``` json
     {
         'previous_questions': [1, 4, 20, 15],
         'quiz_category': current_category
     }
+    ```
 - Sample: curl -X POST 'http://localhost:5000/quizzes'
-- Expected Response: 
+- Expected Response:
+``` json
 {
  "question": {
   "answer": "Escher",
@@ -247,7 +248,8 @@ POST "/questions/search"
   }
 - Sample: curl -X POST -H "Content-Type: application/json" -d '{"searchTerm": "title"}' http://localhost:5000/questions/search
 - Expected Response:
-``` json
+
+     ``` json
      {
         "questions": [
           {
