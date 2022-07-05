@@ -247,7 +247,44 @@ def create_app(test_config=None):
     @app.route("/quizzes", methods=["POST"])
     def play_quiz():
         
-        data = request.get_json()
+        body = request.get_json()
+        previous = body.get('previous_questions')
+        category = body.get('quiz_category')
+        
+        if ((category is None) or (previous is None)):
+            abort(400)
+
+        # load questions all questions if "ALL" is selected
+        if (category['id'] == 0):
+            questions = Question.query.all()
+        # load questions for given category
+        else:
+            questions = Question.query.filter_by(category=category['id']).all()
+
+        total = len(questions)
+
+        def check_if_used(question):
+            used = False
+            for uncalled_question in previous:
+                if (uncalled_question == question.id):
+                    used = True
+            return used
+
+        question = questions[random.randrange(0, len(questions), 1)]
+
+        # check if used, execute until unused question found
+        while (check_if_used(question)):
+            #question = get_random_question()
+
+            if (len(previous) == total):
+                return jsonify({
+                    'success': True
+                })
+        return jsonify({
+            'success': True,
+            'question': question.format()
+        })
+        '''data = request.get_json()
         if not (data['quiz_category']['id']):
             abort(400)
         category_id = data['quiz_category']['id']
@@ -270,7 +307,7 @@ def create_app(test_config=None):
         return jsonify({
             'success': True,
             'question': question
-        })
+        })'''
 
     """
     @TODO:
