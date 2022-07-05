@@ -2,6 +2,9 @@ import os
 import unittest
 import json
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from flaskr import create_app
 from models import setup_db, Question, Category
@@ -83,6 +86,25 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['error'], 422)
         self.assertEqual(data['message'], 'unprocessable')
+
+    #Test questions per category
+    def test_questions_per_category_success(self):
+        res = self.client().get('/categories/3/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(data['questions'])
+        self.assertTrue(data['total_questions'])
+
+    def test_questions_per_category_failure(self):
+        res = self.client().get('/categories/10/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['error'], 400)
+        self.assertEqual(data['message'], 'bad request')
+        
         
     #Test question deletion   
     def test_successful_delete(self):
