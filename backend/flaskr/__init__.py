@@ -274,7 +274,7 @@ def create_app(test_config=None):
 
         # check if used, execute until unused question found
         while (check_if_used(question)):
-            #question = get_random_question()
+            question = questions[random.randrange(0, len(questions), 1)]
 
             if (len(previous) == total):
                 return jsonify({
