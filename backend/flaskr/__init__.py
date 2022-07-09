@@ -261,8 +261,6 @@ def create_app(test_config=None):
         else:
             quiz_questions = Question.query.filter_by(category=questions_category['id']).all()
 
-        #total = len(quiz_questions)
-
         # a function to check if question has been shown
         def confirm_question_status(question):
             shown = False
@@ -277,10 +275,6 @@ def create_app(test_config=None):
         while (confirm_question_status(question)):
             question = quiz_questions[random.randrange(0, len(quiz_questions), 1)]
 
-            if (len(previous_questions) == len(quiz_questions)):
-                return jsonify({
-                    'success': True
-                })
         return jsonify({
             'success': True,
             'question': question.format()
@@ -309,6 +303,9 @@ def create_app(test_config=None):
             'success': True,
             'question': question
         })'''
+        '''if (len(previous_questions) == len(quiz_questions)):
+                return jsonify({
+                    'success': True})'''
 
     """
     @TODO:
