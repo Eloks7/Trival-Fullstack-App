@@ -159,8 +159,8 @@ def create_app(test_config=None):
                 selection = Question.query.filter(Question.question.ilike('%{}%'.format(search))).all()
                 current_questions = paginate_questions(request, selection)
                 formatted_questions = [question.format() for question in selection]
-                if len(formatted_questions) == 0:
-                    abort(404)
+                #if len(formatted_questions) == 0:
+                #    abort(404)
             
                 return jsonify({
                     "success": True,
@@ -274,6 +274,10 @@ def create_app(test_config=None):
         # check if used, execute until unused question found
         while (confirm_question_status(question)):
             question = quiz_questions[random.randrange(0, len(quiz_questions), 1)]
+            if len(previous_questions) == len(quiz_questions):
+                return jsonify({
+                    'success': True
+                })
 
         return jsonify({
             'success': True,
