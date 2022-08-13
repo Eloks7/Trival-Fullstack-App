@@ -12,9 +12,11 @@ def paginate_questions(request, selection):
     #Using Argument object to get the value of page parameter
     page = request.args.get('page', 1, type=int) #Defaults to 1 without page argument
     start = (page - 1) * QUESTIONS_PER_PAGE
-    end = start + QUESTIONS_PER_PAGE
+    end = start + (QUESTIONS_PER_PAGE - 1)
     
+    # List interpolation to format each question
     formatted_questions = [question.format() for question in selection]
+    # 
     current_questions = formatted_questions[start:end]
     
     return current_questions
