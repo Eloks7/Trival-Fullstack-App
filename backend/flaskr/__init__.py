@@ -161,8 +161,8 @@ def create_app(test_config=None):
                 selection = Question.query.filter(Question.question.ilike('%{}%'.format(search))).all()
                 current_questions = paginate_questions(request, selection)
                 formatted_questions = [question.format() for question in selection]
-                if len(formatted_questions) == 0:
-                    abort(404)
+                #if len(formatted_questions) == 0:
+                #    abort(404)
             
                 return jsonify({
                     "success": True,
@@ -250,38 +250,37 @@ def create_app(test_config=None):
     def play_quiz():
         
         body = request.get_json()
-        previous = body.get('previous_questions')
-        category = body.get('quiz_category')
+        questions_category = body.get('quiz_category')
+        previous_questions = body.get('previous_questions')
         
-        if ((category is None) or (previous is None)):
+        if ((previous_questions == None) or (questions_category == None)):
             abort(400)
 
-        # load questions all questions if "ALL" is selected
-        if (category['id'] == 0):
-            questions = Question.query.all()
-        # load questions for given category
+        # for a general quiz with a particular category
+        if (questions_category['id'] == 0):
+            quiz_questions = Question.query.all()
+        # for a quiz with a specified category
         else:
-            questions = Question.query.filter_by(category=category['id']).all()
+            quiz_questions = Question.query.filter_by(category=questions_category['id']).all()
 
-        total = len(questions)
+        # a function to check if question has been shown
+        def confirm_question_status(question):
+            shown = False
+            for each_question in previous_questions:
+                if (each_question == question.id):
+                    shown = True
+            return shown
 
-        def check_if_used(question):
-            used = False
-            for uncalled_question in previous:
-                if (uncalled_question == question.id):
-                    used = True
-            return used
-
-        question = questions[random.randrange(0, len(questions), 1)]
+        question = quiz_questions[random.randrange(0, len(quiz_questions), 1)]
 
         # check if used, execute until unused question found
-        while (check_if_used(question)):
-            #question = get_random_question()
-
-            if (len(previous) == total):
+        while (confirm_question_status(question)):
+            question = quiz_questions[random.randrange(0, len(quiz_questions), 1)]
+            if len(previous_questions) == len(quiz_questions):
                 return jsonify({
                     'success': True
                 })
+
         return jsonify({
             'success': True,
             'question': question.format()
@@ -310,6 +309,9 @@ def create_app(test_config=None):
             'success': True,
             'question': question
         })'''
+        '''if (len(previous_questions) == len(quiz_questions)):
+                return jsonify({
+                    'success': True})'''
 
 
     @app.errorhandler(404)
