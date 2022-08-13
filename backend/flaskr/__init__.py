@@ -9,7 +9,8 @@ from models import setup_db, Question, Category
 QUESTIONS_PER_PAGE = 10
 
 def paginate_questions(request, selection):
-    page = request.args.get('page', 1, type=int)
+    #Using Argument object to get the value of page parameter
+    page = request.args.get('page', 1, type=int) #Defaults to 1 without page argument
     start = (page - 1) * QUESTIONS_PER_PAGE
     end = start + QUESTIONS_PER_PAGE
     
@@ -217,9 +218,9 @@ def create_app(test_config=None):
     def questions_per_category(id):
         category = Category.query.filter_by(id=id).one_or_none()
 
-        # abort 400 for bad request if category isn't found
+        # abort 404 if category isn't found
         if (category is None):
-            abort(400)
+            abort(404)
 
         # get the matching questions
         selection = Question.query.filter_by(category=category.id).all()

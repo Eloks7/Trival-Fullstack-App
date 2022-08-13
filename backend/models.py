@@ -41,6 +41,7 @@ class Question(db.Model):
         self.category = category
         self.difficulty = difficulty
 
+    # Other methods
     def insert(self):
         db.session.add(self)
         db.session.commit()
