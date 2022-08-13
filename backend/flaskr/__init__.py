@@ -18,9 +18,10 @@ def paginate_questions(request, selection):
     
     return current_questions
 
+# Application factory function
 def create_app(test_config=None):
-    # create and configure the app
-    app = Flask(__name__)
+    # create and configure the app (current flask instance)
+    app = Flask(__name__) # "__name__ is the name of current Python module"
     setup_db(app)
 
     """
@@ -31,6 +32,7 @@ def create_app(test_config=None):
     """
     @TODO: Use the after_request decorator to set Access-Control-Allow
     """
+    # Runs after a request is received and takes response as a parameter
     @app.after_request
     def after_request(response):
         response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization,true")
@@ -309,11 +311,7 @@ def create_app(test_config=None):
             'question': question
         })'''
 
-    """
-    @TODO:
-    Create error handlers for all expected errors
-    including 404 and 422.
-    """
+
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
