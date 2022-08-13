@@ -32,9 +32,6 @@ def create_app(test_config=None):
     """
     CORS(app)
 
-    """
-    @TODO: Use the after_request decorator to set Access-Control-Allow
-    """
     # Runs after a request is received and takes response as a parameter
     @app.after_request
     def after_request(response):
