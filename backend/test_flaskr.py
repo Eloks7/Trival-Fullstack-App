@@ -18,7 +18,8 @@ class TriviaTestCase(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client
         self.database_name = "trivia_test"
-        self.database_path = "postgres://{}/{}".format('localhost:5432', self.database_name)
+        #self.database_path = "postgres://{}/{}".format('localhost:5432', self.database_name)
+        self.database_path = 'postgresql://postgres:8562@localhost:5432/trivia_test'
         setup_db(self.app, self.database_path)
 
         self.new_question = {
@@ -47,12 +48,12 @@ class TriviaTestCase(unittest.TestCase):
         pass
 
     """
-    TODO
     Write at least one test for each test for successful operation and for expected errors.
     """
     #Test Category Listing
     def test_listing_categories(self):
         res = self.client().get('/categories')
+        # Convert res into a python dictionary
         data = json.loads(res.data)
         
         self.assertEqual(res.status_code, 200)
@@ -100,10 +101,10 @@ class TriviaTestCase(unittest.TestCase):
         res = self.client().get('/categories/10/questions')
         data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
-        self.assertEqual(data['error'], 400)
-        self.assertEqual(data['message'], 'bad request')
+        self.assertEqual(data['error'], 404)
+        self.assertEqual(data['message'], 'resource not found')
         
         
     #Test question deletion   
@@ -154,7 +155,7 @@ class TriviaTestCase(unittest.TestCase):
          
     #Test Quiz
     def test_quiz_success(self):
-        res = self.client().post('/quizzes', json={"quiz_category": {"id": 1},
+        res = self.client().post('/quizzes', json={"quiz_category": 1,
                                                  "previous_questions": [2, 4]})
         data = json.loads(res.data)
         
