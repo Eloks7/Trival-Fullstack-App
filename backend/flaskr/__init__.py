@@ -57,7 +57,7 @@ def create_app(test_config=None):
         selection = Question.query.order_by(Question.id).all()
         categories = Category.query.order_by(Category.type).all()
         current_questions = paginate_questions(request, selection)
-        formatted_questions = [question.format() for question in selection]
+        #formatted_questions = [question.format() for question in selection]
         try:
             
             if len(current_questions) == 0:
@@ -66,7 +66,7 @@ def create_app(test_config=None):
             return jsonify({
                 "success": True,
                 "questions": current_questions,
-                "total_questions": len(formatted_questions),
+                "total_questions": len(selection),
                 "current_category": None,
                 "categories": {
                     category.id: category.type for category in categories
@@ -109,15 +109,13 @@ def create_app(test_config=None):
             try:
                 selection = Question.query.filter(Question.question.ilike('%{}%'.format(search))).all()
                 current_questions = paginate_questions(request, selection)
-                formatted_questions = [question.format() for question in selection]
-                #if len(formatted_questions) == 0:
-                #    abort(404)
+                #formatted_questions = [question.format() for question in selection]
             
                 return jsonify({
                     "success": True,
                     "questions": current_questions,
                     "current_category": None,
-                    "total_questions": len(formatted_questions)
+                    "total_questions": len(selection)
                 })
             except:
                 abort(404)
@@ -157,13 +155,12 @@ def create_app(test_config=None):
 
         # paginate the selection
         category_questions = paginate_questions(request, selection)
-        formatted_questions = [question.format() for question in selection]
 
         # return the results
         return jsonify({
             'success': True,
             'questions': category_questions,
-            'total_questions': len(formatted_questions),
+            'total_questions': len(selection),
             'current_category': category.type
         })
 
@@ -197,7 +194,6 @@ def create_app(test_config=None):
 
         # check if used, execute until unused question found
         while (confirm_question_status(question)):
-            question = quiz_questions[random.randrange(0, len(quiz_questions), 1)]
             if len(previous_questions) == len(quiz_questions):
                 return jsonify({
                     'success': True
